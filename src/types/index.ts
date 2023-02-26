@@ -1,6 +1,6 @@
 export type NSDate = number;
 
-export interface Notification {
+export interface MacNotification {
   rec_id: number;
   app_id: number;
   uuid: Buffer;

@@ -2,12 +2,12 @@ import os from 'os';
 import path from 'path';
 import sqlite3 from 'sqlite3';
 
-import { NSDate, Notification } from '../types/index';
+import { NSDate, MacNotification } from '../types/index';
 
 const dbPath = path.join(os.tmpdir(), '../0/com.apple.notificationcenter/db2/db');
 const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY);
 
-function fetchNotification(latestDeriveredDate: NSDate): Promise<Notification[]> {
+function fetchNotification(latestDeriveredDate: NSDate): Promise<MacNotification[]> {
   return new Promise((resolve, reject) => {
     db.all(
       `select * from record where delivered_date > ${latestDeriveredDate}`,
