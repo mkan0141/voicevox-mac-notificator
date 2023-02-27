@@ -21,10 +21,11 @@ async function fetchAudioQuery(text: string): Promise<AxiosResponse<AudioQuery>>
 }
 
 async function fetchSoundData(
-  query: AudioQuery
+  query: AudioQuery,
+  charactorId: number
 ): Promise<AxiosResponse<NodeJS.ArrayBufferView>> {
   return axios.post<NodeJS.ArrayBufferView>(
-    'http://127.0.0.1:50021/synthesis?speaker=0&enable_interrogative_upspeak=true',
+    `http://127.0.0.1:50021/synthesis?speaker=${charactorId}&enable_interrogative_upspeak=true`,
     JSON.stringify(query),
     {
       responseType: 'arraybuffer',
