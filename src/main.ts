@@ -1,45 +1,19 @@
 #!/usr/bin/env node
 
-import { execSync } from 'child_process';
-import fs from 'fs';
+import { program } from 'commander';
 
-import {
-  fetchNotification,
-  fetchLatestNotificationDeriveredDate,
-} from './repositories/notification';
-import {
-  checkServerRunning,
-  fetchAudioQuery,
-  fetchSoundData,
-} from './repositories/sound';
-import { notificationToBody } from './utils';
+import { watch } from './cmd/watch';
+import { list } from './cmd/list';
 
-function playSoundData(voiceData: NodeJS.ArrayBufferView) {
-  fs.writeFileSync('voice.wav', voiceData);
-  execSync('play voice.wav 2> /dev/null');
-}
+program
+  .command('watch')
+  .option('-c, --charactor-id <number>', 'voice charactor id', '3')
+  .action((params, options, command) => {
+    watch(params);
+  });
 
-async function main() {
-  await checkServerRunning();
+program.command('list').action(() => {
+  list();
+});
 
-  let latestDeriveredDate = await fetchLatestNotificationDeriveredDate();
-
-  setInterval(async () => {
-    const notificationList = await fetchNotification(latestDeriveredDate);
-    if (!notificationList.length) return;
-
-    for (let notification of notificationList) {
-      const body = notificationToBody(notification);
-      if (!body) continue;
-
-      const { data: audioQuery } = await fetchAudioQuery(body);
-      const { data: soundData } = await fetchSoundData(audioQuery);
-
-      playSoundData(soundData);
-    }
-
-    latestDeriveredDate = notificationList[notificationList.length - 1].delivered_date;
-  }, 5000);
-}
-
-main();
+program.parse();
