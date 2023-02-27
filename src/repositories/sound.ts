@@ -37,4 +37,8 @@ async function fetchSoundData(
   );
 }
 
-export { checkServerRunning, fetchAudioQuery, fetchSoundData };
+async function fetchSpeakerList() {
+  return axios.get('http://127.0.0.1:50021/speakers');
+}
+
+export { checkServerRunning, fetchAudioQuery, fetchSoundData, fetchSpeakerList };
