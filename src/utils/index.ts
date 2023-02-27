@@ -1,6 +1,6 @@
 import bplistParser from 'bplist-parser';
 
-import { NSDate, MacNotification } from './types/index';
+import { NSDate, MacNotification } from '../types/index';
 
 // https://developer.apple.com/documentation/foundation/nsdate
 function dateToNSDate(date: Date): NSDate {
